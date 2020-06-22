@@ -14,3 +14,8 @@ body {
         opacity: 1; 
      } 
 }
+
+a.newline
+{
+    display: block;
+}
