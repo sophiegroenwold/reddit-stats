@@ -55,25 +55,28 @@ def new(subreddit_name):
     return new_df
 
 def top_users(subreddit_name, time_filter):
+    print(subreddit_name)
     subreddit = reddit.subreddit(subreddit_name).top(time_filter = time_filter)
 
     user_dict = {}
     for post in subreddit:
+
         # add score for author
-        if post.author.name in user_dict:
-            user_dict[post.author.name] += 1
-        else:
-            user_dict[post.author.name] = 1
+        if post.author != None:
+            if post.author.name in user_dict:
+                user_dict[post.author.name] += 1
+            else:
+                user_dict[post.author.name] = 1
 
         # add score for each commentor
         for comment in post.comments:
-            if comment.author.name in user_dict:
-                user_dict[comment.author.name] += 1
-            else:
-                user_dict[comment.author.name] = 1
+            if comment.author != None:
+                if comment.author.name in user_dict:
+                    user_dict[comment.author.name] += 1
+                else:
+                    user_dict[comment.author.name] = 1
 
     # sort so that top users are first
-    # {k: v for k, v in sorted(user_dict.items(), key=lambda item: item[1])}
     user_list = sorted(user_dict, key=user_dict.__getitem__, reverse=True)
 
     # make dataframe with data
@@ -90,6 +93,8 @@ def top_users(subreddit_name, time_filter):
         i += 1
 
     return user_df
+
+top_users('UCSantaBarbara', 'day')
 
 
 

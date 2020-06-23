@@ -11,6 +11,14 @@ external_stylesheets = ['https://fonts.googleapis.com/css2?family=Inter:wght@300
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+hot_df = data.hot('UCSantaBarbara')
+new_df = data.new('UCSantaBarbara')
+name = data.name('UCSantaBarbara')
+description = data.description('UCSantaBarbara')
+num_subscribers = data.num_subscribers('UCSantaBarbara')
+time_created = data.time_created('UCSantaBarbara')
+top_users_day_df = data.top_users('UCSantaBarbara', 'day')
+
 def generate_table(dataframe, max_rows=10):
     return html.Table([
         html.Tbody([
@@ -32,14 +40,49 @@ app.layout = html.Div([
     html.H1(children='redditometer'),
     html.Div('Enter the name of a subreddit to view stats and toxicity.'),
 
-    # for link
-    # dcc.Link('Navigate to /UCSantaBarbara', href='/UCSantaBarbara'),
-    # html.Div(id='page-content')
+    html.Div(children=[
+        html.Div(className = "parent_left", children = 
+            html.Div(className = "quick_stats", children=[
+                html.H2('quick stats'),
 
-    # for input box
-    # dcc.Input(id='input_subreddit_id', type='text'),
-    # html.Div(id='input_subreddit_div')
+                # subreddit basic info
+                html.Div('Welcome to ', className = 'div_no_new_line'),
+                html.A('r/' + name, href = 'https://www.reddit.com/r/' + name, className = "no_newline", target = "_blank"),
+                html.Div(description),
+                html.Div(str(num_subscribers) + ' subscribers'),
+                html.Div('Created ' + time_created),
+
+                # hot posts
+                html.H3('hot posts'),
+                generate_list(hot_df),
+
+                # top posts
+                html.H3('new posts'),
+                generate_list(new_df), 
+        
+                # top users of the day
+                html.H3('top users'),
+                generate_table(top_users_day_df)
+            ])
+        )
+    ])
 ])
+
+# app.layout = html.Div([
+#     # represents the URL bar, doesn't render anything
+#     dcc.Location(id='url', refresh=False),
+
+#     html.H1(children='redditometer'),
+#     html.Div('Enter the name of a subreddit to view stats and toxicity.'),
+
+#     # for link
+#     # dcc.Link('Navigate to /UCSantaBarbara', href='/UCSantaBarbara'),
+#     # html.Div(id='page-content')
+
+#     # for input box
+#     # dcc.Input(id='input_subreddit_id', type='text'),
+#     # html.Div(id='input_subreddit_div')
+# ])
 
 # for link
 # @app.callback(dash.dependencies.Output('page-content', 'children'),
@@ -51,45 +94,45 @@ app.layout = html.Div([
 #     [Input(component_id='input_subreddit_id', component_property='value')]
 # )
 
-def display_page(pathname):
-    hot_df = data.hot('UCSantaBarbara')
-    new_df = data.new('UCSantaBarbara')
-    name = data.name('UCSantaBarbara')
-    description = data.description('UCSantaBarbara')
-    num_subscribers = data.num_subscribers('UCSantaBarbara')
-    time_created = data.time_created('UCSantaBarbara')
-    top_users_day_df = data.top_users('UCSantaBarbara', 'day')
+# def display_page(input):
+#     hot_df = data.hot('UCSantaBarbara')
+#     new_df = data.new('UCSantaBarbara')
+#     name = data.name('UCSantaBarbara')
+#     description = data.description('UCSantaBarbara')
+#     num_subscribers = data.num_subscribers('UCSantaBarbara')
+#     time_created = data.time_created('UCSantaBarbara')
+#     top_users_day_df = data.top_users('UCSantaBarbara', 'day')
 
-    if pathname == '/':
-        return html.Div('')
+#     # if pathname == '/':
+#     #     return html.Div('')
 
-    else:
-        return html.Div(children=[
-            html.Div(className = "parent_left", children = 
-                html.Div(className = "quick_stats", children=[
-                    html.H2('quick stats'),
+#     # else:
+#     return html.Div(children=[
+#         html.Div(className = "parent_left", children = 
+#             html.Div(className = "quick_stats", children=[
+#                 html.H2('quick stats'),
 
-                    # subreddit basic info
-                    html.Div('Welcome to ', className = 'div_no_new_line'),
-                    html.A('r/' + name, href = 'https://www.reddit.com/r/' + name, className = "no_newline", target = "_blank"),
-                    html.Div(description),
-                    html.Div(str(num_subscribers) + ' subscribers'),
-                    html.Div('Created ' + time_created),
+#                 # subreddit basic info
+#                 html.Div('Welcome to ', className = 'div_no_new_line'),
+#                 html.A('r/' + name, href = 'https://www.reddit.com/r/' + name, className = "no_newline", target = "_blank"),
+#                 html.Div(description),
+#                 html.Div(str(num_subscribers) + ' subscribers'),
+#                 html.Div('Created ' + time_created),
 
-                    # hot posts
-                    html.H3('hot posts'),
-                    # generate_list(hot_df),
+#                 # hot posts
+#                 html.H3('hot posts'),
+#                 # generate_list(hot_df),
 
-                    # top posts
-                    html.H3('new posts'),
-                    generate_list(new_df), 
-                    
-                    # top users of the day
-                    html.H3('top users'),
-                    generate_table(top_users_day_df)
-                ])
-            )
-        ])
+#                 # top posts
+#                 html.H3('new posts'),
+#                 generate_list(new_df), 
+                
+#                 # top users of the day
+#                 html.H3('top users'),
+#                 generate_table(top_users_day_df)
+#             ])
+#         )
+#     ])
 
 if __name__ == '__main__':
     app.run_server(debug=True)
