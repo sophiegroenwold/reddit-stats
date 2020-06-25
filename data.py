@@ -35,7 +35,7 @@ def hot(subreddit_name):
     hot_df = pd.DataFrame(columns = ['title', 'url'])
     for post in subreddit:
         hot_df = hot_df.append({
-            'title': post.title,
+            'title': post.title[:56] + '...',
             'url': 'https://www.reddit.com' + post.permalink
         }, ignore_index=True)
 
@@ -48,14 +48,13 @@ def new(subreddit_name):
     new_df = pd.DataFrame(columns = ['title', 'url'])
     for post in subreddit:
         new_df = new_df.append({
-            'title': post.title,
+            'title': post.title[:56] + '...',
             'url': 'https://www.reddit.com' + post.permalink
         }, ignore_index=True)
 
     return new_df
 
 def top_users(subreddit_name, time_filter):
-    print(subreddit_name)
     subreddit = reddit.subreddit(subreddit_name).top(time_filter = time_filter)
 
     user_dict = {}
