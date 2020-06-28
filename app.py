@@ -32,15 +32,16 @@ app.layout = html.Div([
     html.H1(children='redditometer'),
     html.Div('Enter the name of a subreddit to view stats and toxicity.'),
 
-    # for link
+    # # for link
     dcc.Link('Navigate to /UCSantaBarbara', href='/UCSantaBarbara'),
     html.Br(),
     dcc.Link('Navigate to /UCLA', href='/UCLA'),
     html.Div(id='page-content')
 
     # for input box
-    # dcc.Input(id='input_subreddit_id', type='text'),
-    # html.Div(id='input_subreddit_div')
+    # dcc.Input(id='input-state', type='text', value='UCSantaBarbara', href='/UCSantaBarbara'),
+    # html.Button(id='submit-button-state', n_clicks=0, children='Submit'),
+    # html.Div(id='output-state')
 ])
 
 # for link
@@ -52,11 +53,12 @@ app.layout = html.Div([
 #     Output(component_id='input_subreddit_div', component_property='children'),
 #     [Input(component_id='input_subreddit_id', component_property='value')]
 # )
+# @app.callback(Output('output-state', 'children'),
+#               [Input('submit-button-state', 'n_clicks', 'url', 'pathname')],
+#               [State('input-state', 'value')])
 
 def display_page(pathname):
     query = str(pathname[1:])
-    print('string: ' + query)
-    # print('type: ' + type(query))
     hot_df = data.hot(query)
     new_df = data.new(query)
     name = data.name(query)

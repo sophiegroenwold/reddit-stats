@@ -4,8 +4,6 @@ import praw
 import pandas as pd
 from datetime import datetime
 
-subreddit_name = 'UCSantaBarbara'
-
 reddit = praw.Reddit(client_id=mySecrets['client_id'], client_secret=mySecrets['client_secret'], user_agent=mySecrets['user_agent'])
 
 def name(subreddit_name):
@@ -34,8 +32,11 @@ def hot(subreddit_name):
     # make dataframe with data
     hot_df = pd.DataFrame(columns = ['title', 'url'])
     for post in subreddit:
+        title = post.title
+        if len(title) > 56:
+            title = title[:56] + '...'
         hot_df = hot_df.append({
-            'title': post.title[:56] + '...',
+            'title': title,
             'url': 'https://www.reddit.com' + post.permalink
         }, ignore_index=True)
 
@@ -47,8 +48,11 @@ def new(subreddit_name):
     # make dataframe with data
     new_df = pd.DataFrame(columns = ['title', 'url'])
     for post in subreddit:
+        title = post.title
+        if len(title) > 56:
+            title = title[:56] + '...'
         new_df = new_df.append({
-            'title': post.title[:56] + '...',
+            'title': title,
             'url': 'https://www.reddit.com' + post.permalink
         }, ignore_index=True)
 
