@@ -32,45 +32,28 @@ app.layout = html.Div([
     html.H1(children='redditometer'),
     html.Div('Enter the name of a subreddit to view stats and toxicity.'),
 
-    # # for link
-    dcc.Link('Navigate to /UCSantaBarbara', href='/UCSantaBarbara'),
-    html.Br(),
-    dcc.Link('Navigate to /UCLA', href='/UCLA'),
-    html.Div(id='page-content')
-
-    # for input box
-    # dcc.Input(id='input-state', type='text', value='UCSantaBarbara', href='/UCSantaBarbara'),
-    # html.Button(id='submit-button-state', n_clicks=0, children='Submit'),
-    # html.Div(id='output-state')
+    dcc.Input(id="input", type="text", placeholder="", debounce=True),
+    html.Div(id="output")
 ])
 
-# for link
-@app.callback(dash.dependencies.Output('page-content', 'children'),
-              [dash.dependencies.Input('url', 'pathname')])
+@app.callback(
+    Output("output", "children"),
+    [Input("input", "value")],
+)
 
-# for input box
-# @app.callback(
-#     Output(component_id='input_subreddit_div', component_property='children'),
-#     [Input(component_id='input_subreddit_id', component_property='value')]
-# )
-# @app.callback(Output('output-state', 'children'),
-#               [Input('submit-button-state', 'n_clicks', 'url', 'pathname')],
-#               [State('input-state', 'value')])
-
-def display_page(pathname):
-    query = str(pathname[1:])
-    hot_df = data.hot(query)
-    new_df = data.new(query)
-    name = data.name(query)
-    description = data.description(query)
-    num_subscribers = data.num_subscribers(query)
-    time_created = data.time_created(query)
-    top_users_day_df = data.top_users(query, 'day')
-
-    if pathname == '/':
-        return html.Div('')
-
+def update_output(input):
+    query = str(input)
+    if (query == 'None'):
+        return html.Div(children=[])
     else:
+        hot_df = data.hot(query)
+        new_df = data.new(query)
+        name = data.name(query)
+        description = data.description(query)
+        num_subscribers = data.num_subscribers(query)
+        time_created = data.time_created(query)
+        top_users_day_df = data.top_users(query, 'day')
+
         return html.Div(children=[
             html.Div(className = "parent_left", children = 
                 html.Div(className = "quick_stats", children=[
