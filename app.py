@@ -6,6 +6,7 @@ from dash.dependencies import Output, State, Input
 import pandas as pd
 
 import data
+import toxicity
 
 external_stylesheets = ['https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap']
 
@@ -46,6 +47,7 @@ def update_output(input):
     if (query == 'None'):
         return html.Div(children=[])
     else:
+        # quick stats
         hot_df = data.hot(query)
         new_df = data.new(query)
         name = data.name(query)
@@ -53,6 +55,10 @@ def update_output(input):
         num_subscribers = data.num_subscribers(query)
         time_created = data.time_created(query)
         top_users_day_df = data.top_users(query, 'day')
+
+        # toxicity
+        # tox_score = toxicity.toxicity_percentage(query, 5)
+        tox_score = toxicity.fake_value() # to prevent reaching quota
 
         return html.Div(children=[
             html.Div(className = "parent_left", children = 
@@ -77,6 +83,12 @@ def update_output(input):
                     # top users of the day
                     html.H3('top users'),
                     generate_table(top_users_day_df)
+                ])
+            ),
+            html.Div(className = "parent_right", children = 
+                html.Div(className = "main", children=[
+                    html.H2("toxicity"),
+                    html.H1(tox_score)
                 ])
             )
         ])

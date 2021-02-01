@@ -63,6 +63,21 @@ h3
     width: 95%;
 }
 
+.parent_right
+{
+    height: 73vh;
+    margin-top: 10px;
+    overflow-y: scroll;
+    width: 64%;
+    float: right;
+}
+
+.main
+{
+    word-wrap: break-word;
+    width: 95%;
+}
+
 .div_no_new_line
 {
     display:inline;

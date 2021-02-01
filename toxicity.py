@@ -18,6 +18,9 @@ def get_comments(subreddit_name, num_posts):
             comments.append(comment.body)
     return comments
 
+def fake_value():
+    return str(0.5)
+
 def toxicity_percentage(subreddit_name, num_posts):
     comments = get_comments(subreddit_name, num_posts)
     # print(comments)
@@ -41,6 +44,6 @@ def toxicity_percentage(subreddit_name, num_posts):
         score = response_dict['attributeScores']['TOXICITY']['summaryScore']['value']
         sum += score
 
-    print(sum / n)
+    return(str(sum / n))
 
-toxicity_percentage('UCSantaBarbara', 5)
+# toxicity_percentage('UCSantaBarbara', 5)
