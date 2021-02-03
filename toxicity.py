@@ -26,7 +26,9 @@ def toxicity_percentage(subreddit_name, num_posts):
     # print(comments)
 
     n = 0
-    sum = 0
+    tox_sum = 0
+    profanity_sum = 0
+    insult_sum = 0
     for sample in comments:
         n += 1
         api_key = perspectiveSecret['api_key']
@@ -35,15 +37,21 @@ def toxicity_percentage(subreddit_name, num_posts):
         data_dict = {
             'comment': {'text': sample},
             'languages': ['en'],
-            'requestedAttributes': {'TOXICITY': {}}
+            'requestedAttributes': {'TOXICITY': {}, 'PROFANITY': {}, 'INSULT': {}}
         }
 
         response = requests.post(url=url, data=json.dumps(data_dict)) 
         response_dict = json.loads(response.content) 
-        print(response_dict)
-        score = response_dict['attributeScores']['TOXICITY']['summaryScore']['value']
-        sum += score
+        # print(response_dict)
 
-    return(str(sum / n))
+        tox_score = response_dict['attributeScores']['TOXICITY']['summaryScore']['value']
+        profanity_score = response_dict['attributeScores']['PROFANITY']['summaryScore']['value']
+        insult_score = response_dict['attributeScores']['INSULT']['summaryScore']['value']
 
-# toxicity_percentage('UCSantaBarbara', 5)
+        tox_sum += tox_score
+        profanity_sum += profanity_score
+        insult_sum += insult_score
+        
+    return [str(tox_sum / n), str(profanity_sum / n), str(insult_sum / n)]
+
+# print(toxicity_percentage('UCSantaBarbara', 1))

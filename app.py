@@ -2,9 +2,12 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Output, State, Input
+# import plotly.express as px
+import plotly.graph_objects as go
 
 import pandas as pd
 
+# files
 import data
 import toxicity
 
@@ -25,6 +28,18 @@ def generate_list(dataframe):
     return html.Div([
         html.A(dataframe.iloc[i][0], href = dataframe.iloc[i][1], className = "newline", target = "_blank") for i in range(len(dataframe))
     ])
+
+def bar_graph(list):
+    colors = ['rgb(153, 153, 255)',] * 3
+
+    fig = go.Figure(data=[go.Bar(
+        x = ["Toxicity", "Profanity", "Insult"],
+        y = list,
+        marker_color = colors
+    )])
+
+    return fig
+
 
 app.layout = html.Div([
     # represents the URL bar, doesn't render anything
@@ -57,8 +72,12 @@ def update_output(input):
         top_users_day_df = data.top_users(query, 'day')
 
         # toxicity
-        # tox_score = toxicity.toxicity_percentage(query, 5)
-        tox_score = toxicity.fake_value() # to prevent reaching quota
+        list = toxicity.toxicity_percentage(query, 1)
+        # list = ['0.0572013675', '0.032554077'] # to prevent reaching quota
+        tox_score = list[0]
+        profanity_score = list[1]
+        insult_score = list[2]
+        fig = bar_graph(list)
 
         return html.Div(children=[
             html.Div(className = "parent_left", children = 
@@ -88,7 +107,12 @@ def update_output(input):
             html.Div(className = "parent_right", children = 
                 html.Div(className = "main", children=[
                     html.H2("toxicity"),
-                    html.H1(tox_score)
+                    html.H1(tox_score),
+
+                    dcc.Graph(
+                        id='attribute-fig',
+                        figure=fig
+                    )
                 ])
             )
         ])
