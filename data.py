@@ -1,6 +1,8 @@
 from secrets import mySecrets
 
 import praw
+from praw.models import MoreComments
+
 import pandas as pd
 from datetime import datetime
 
@@ -72,7 +74,11 @@ def top_users(subreddit_name, time_filter):
                 user_dict[post.author.name] = 1
 
         # add score for each commentor
+        post.comments.replace_more(limit=0) # removes instances of MoreComments objs
         for comment in post.comments:
+            # if isinstance(comment, MoreComments):
+            #     print('hit MoreComments')
+            #     continue
             if comment.author != None:
                 if comment.author.name in user_dict:
                     user_dict[comment.author.name] += 1

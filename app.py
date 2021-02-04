@@ -30,14 +30,41 @@ def generate_list(dataframe):
     ])
 
 def bar_graph(list):
-    colors = ['rgb(153, 153, 255)',] * 3
+    colors = ['rgb(153, 153, 255)',] * 6
+    # description = [
+    #     "Rude, disrespectful, or unreasonable comment that is likely to make people leave a discussion",
+    #     "Swear words, curse words, or other obscene or profane language",
+    #     "Insulting, inflammatory, or negative comment towards a person or a group of people",
+    #     "Negative or hateful comments targeting someone because of their identity",
+    #     "Describes an intention to inflict pain, injury, or violence against an individual or group",
+    #     "Contains references to sexual acts, body parts, or other lewd content"
+    # ]
 
     fig = go.Figure(data=[go.Bar(
-        x = ["Toxicity", "Profanity", "Insult"],
+        x = ["Toxicity", "Profanity", "Insults", "Identity Attacks", "Threats", "Sexually Explicit Language"],
         y = list,
-        marker_color = colors
+        marker_color = colors,
+        hovertemplate =
+            '%{y}<br>' +
+            '%{text}',
+        text = [
+            "Rude, disrespectful, or <br>unreasonable content that is <br>likely to make people leave <br>a discussion",
+            "Swear words, curse words, <br>or other obscene or profane <br>language",
+            "Insulting, inflammatory, <br>or negative content towards <br>a person or a group of people",
+            "Negative or hateful content <br>targeting someone because <br>of their identity",
+            "Describes an intention to <br>inflict pain, injury, or <br>violence against an <br>individual or group",
+            "Contains references to sexual <br>acts, body parts, or other <br>lewd content"
+        ],
+        showlegend = False
     )])
 
+    fig.update_traces(hovertemplate=None)
+
+    fig.update_layout(
+        autosize=False,
+        margin=dict(l=20, r=20, t=20, b=20),
+        width=500
+    )
     return fig
 
 
@@ -74,9 +101,12 @@ def update_output(input):
         # toxicity
         list = toxicity.toxicity_percentage(query, 1)
         # list = ['0.0572013675', '0.032554077'] # to prevent reaching quota
-        tox_score = list[0]
+        tox_score = list[0][0:5]
         profanity_score = list[1]
         insult_score = list[2]
+        identity_score = list[3]
+        threat_score = list[4]
+        sexually_exp_score = list[5]
         fig = bar_graph(list)
 
         return html.Div(children=[
