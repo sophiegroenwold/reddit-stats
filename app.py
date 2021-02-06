@@ -13,7 +13,7 @@ import toxicity
 
 external_stylesheets = ['https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 def generate_table(dataframe, max_rows=10):
     return html.Table([
@@ -147,5 +147,5 @@ def update_output(input):
             )
         ])
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+# if __name__ == '__main__':
+#     app.run_server(debug=True)
