@@ -11,7 +11,7 @@ import pandas as pd
 import data
 import toxicity
 
-external_stylesheets = ['https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap']
+# external_stylesheets = ['https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap']
 
 # app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
