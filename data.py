@@ -1,5 +1,6 @@
 import os 
 from dotenv import load_dotenv
+from boto.s3.connection import S3Connection
 
 import praw
 from praw.models import MoreComments
@@ -11,6 +12,8 @@ load_dotenv()
 mySecrets_client_id = os.getenv('mySecrets_client_id')
 mySecrets_client_secret = os.getenv('mySecrets_client_secret')
 mySecrets_user_agent = os.getenv('mySecrets_user_agent')
+
+s3 = S3Connection(os.environ['mySecrets_client_id'], os.environ['mySecrets_client_secret'], os.environ['mySecrets_user_agent'])
 
 reddit = praw.Reddit(client_id=mySecrets_client_id, client_secret=mySecrets_client_secret, user_agent=mySecrets_user_agent)
 
