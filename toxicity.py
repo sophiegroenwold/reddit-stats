@@ -1,11 +1,17 @@
+import os 
+from dotenv import load_dotenv
+
 import json 
 import requests
 import praw
 
-from secrets import perspectiveSecret
-from secrets import mySecrets
+load_dotenv()
+mySecrets_client_id = os.getenv('mySecrets_client_id')
+mySecrets_client_secret = os.getenv('mySecrets_client_secret')
+mySecrets_user_agent = os.getenv('mySecrets_user_agent')
+perspectiveSecret = os.getenv('perspectiveSecret')
 
-reddit = praw.Reddit(client_id=mySecrets['client_id'], client_secret=mySecrets['client_secret'], user_agent=mySecrets['user_agent'])
+reddit = praw.Reddit(client_id=mySecrets_client_id, client_secret=mySecrets_client_secret, user_agent=mySecrets_user_agent)
 
 # comments = ['fuck you, bitch', 'you stupid meanie head']
 
@@ -34,7 +40,7 @@ def toxicity_percentage(subreddit_name, num_posts):
     sexually_exp_sum = 0
     for sample in comments:
         n += 1
-        api_key = perspectiveSecret['api_key']
+        api_key = perspectiveSecret
         url = ('https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze' +    
             '?key=' + api_key)
         data_dict = {

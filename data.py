@@ -1,4 +1,5 @@
-from secrets import mySecrets
+import os 
+from dotenv import load_dotenv
 
 import praw
 from praw.models import MoreComments
@@ -6,7 +7,12 @@ from praw.models import MoreComments
 import pandas as pd
 from datetime import datetime
 
-reddit = praw.Reddit(client_id=mySecrets['client_id'], client_secret=mySecrets['client_secret'], user_agent=mySecrets['user_agent'])
+load_dotenv()
+mySecrets_client_id = os.getenv('mySecrets_client_id')
+mySecrets_client_secret = os.getenv('mySecrets_client_secret')
+mySecrets_user_agent = os.getenv('mySecrets_user_agent')
+
+reddit = praw.Reddit(client_id=mySecrets_client_id, client_secret=mySecrets_client_secret, user_agent=mySecrets_user_agent)
 
 def name(subreddit_name):
     subreddit = reddit.subreddit(subreddit_name)
