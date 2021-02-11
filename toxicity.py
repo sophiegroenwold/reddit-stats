@@ -9,12 +9,12 @@ import praw
 load_dotenv()
 mySecrets_client_id = os.getenv('mySecrets_client_id')
 mySecrets_client_secret = os.getenv('mySecrets_client_secret')
-mySecrets_user_agent = os.getenv('mySecrets_user_agent')
 perspectiveSecret = os.getenv('perspectiveSecret')
 
-s3 = S3Connection(os.environ['mySecrets_client_id'], os.environ['mySecrets_client_secret'], os.environ['mySecrets_user_agent'], os.environ['perspectiveSecret'])
+s3 = S3Connection(os.environ['mySecrets_client_id'], os.environ['mySecrets_client_secret'])
+perspectiveSecret = os.environ['perspectiveSecret']
 
-reddit = praw.Reddit(client_id=mySecrets_client_id, client_secret=mySecrets_client_secret, user_agent=mySecrets_user_agent)
+reddit = praw.Reddit(client_id=mySecrets_client_id, client_secret=mySecrets_client_secret, user_agent='UCSB-subreddit-analysis')
 
 # comments = ['fuck you, bitch', 'you stupid meanie head']
 
